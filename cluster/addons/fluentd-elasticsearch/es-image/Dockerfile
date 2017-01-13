@@ -58,4 +58,4 @@ VOLUME ["/data"]
 EXPOSE 9200 9300
 
 CMD ["/run.sh"]
-#CMD ["/elasticsearch-1.5.2/bin/plugin install /tmp/repository-s3-5.1.1.zip"]
+RUN /elasticsearch-1.5.2/bin/plugin   --install repository-s3 --url   file:///tmp/repository-s3-5.1.1.zip
