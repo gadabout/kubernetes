@@ -20,6 +20,21 @@ FROM java:openjdk-7-jre
 MAINTAINER Satnam Singh "satnam@google.com"
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV ES_JAVA_OPTS "-Xms512m -Xmx512m"
+ENV CLUSTER_NAME elasticsearch-default
+ENV NODE_MASTER true
+ENV NODE_DATA true
+ENV NODE_INGEST true
+ENV HTTP_ENABLE true
+ENV NETWORK_HOST _site_
+ENV HTTP_CORS_ENABLE true
+ENV HTTP_CORS_ALLOW_ORIGIN *
+ENV NUMBER_OF_MASTERS 1
+ENV NUMBER_OF_SHARDS 1
+ENV NUMBER_OF_REPLICAS 0
+ENV MAX_LOCAL_STORAGE_NODES 1
+ENV HTTP_PORT 9200
+ENV TRANSPORT_PORT 9300
 
 RUN apt-get update && \
     apt-get install -y curl && \
@@ -37,7 +52,10 @@ COPY template-k8s-logstash.json /elasticsearch-1.5.2/config/templates/template-k
 COPY run.sh /
 COPY elasticsearch_logging_discovery /
 
+COPY repository-s3-5.1.1.zip  /tmp/repository-s3-5.1.1.zip
+
 VOLUME ["/data"]
 EXPOSE 9200 9300
 
 CMD ["/run.sh"]
+RUN /elasticsearch-1.5.2/bin/plugin   --install repository-s3 --url   file:///tmp/repository-s3-5.1.1.zip
