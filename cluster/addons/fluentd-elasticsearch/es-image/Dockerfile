@@ -17,11 +17,8 @@
 # dockerfile/elasticsearch
 
 FROM java:openjdk-7-jre
-MAINTAINER Satnam Singh "satnam@google.com"
-
+MAINTAINER Ajeesh "ajeesh@peek.com"
 ENV DEBIAN_FRONTEND noninteractive
-ENV ES_JAVA_OPTS "-Xms512m -Xmx512m"
-ENV CLUSTER_NAME elasticsearch-default
 ENV NODE_MASTER true
 ENV NODE_DATA true
 ENV NODE_INGEST true
@@ -29,10 +26,8 @@ ENV HTTP_ENABLE true
 ENV NETWORK_HOST _site_
 ENV HTTP_CORS_ENABLE true
 ENV HTTP_CORS_ALLOW_ORIGIN *
-ENV NUMBER_OF_MASTERS 1
-ENV NUMBER_OF_SHARDS 1
-ENV NUMBER_OF_REPLICAS 0
-ENV MAX_LOCAL_STORAGE_NODES 1
+ENV NUMBER_OF_MASTERS 2
+ENV ES_HEAP_SIZE 3g
 ENV HTTP_PORT 9200
 ENV TRANSPORT_PORT 9300
 
@@ -57,5 +52,6 @@ COPY repository-s3-5.1.1.zip  /tmp/repository-s3-5.1.1.zip
 VOLUME ["/data"]
 EXPOSE 9200 9300
 
+
+RUN /elasticsearch-1.5.2/bin/plugin   --install elastic/elasticsearch-cloud-aws/2.5.1  --url   file:///tmp/elasticsearch-cloud-aws-2.5.1.zip
 CMD ["/run.sh"]
-RUN /elasticsearch-1.5.2/bin/plugin   --install repository-s3 --url   file:///tmp/repository-s3-5.1.1.zip
