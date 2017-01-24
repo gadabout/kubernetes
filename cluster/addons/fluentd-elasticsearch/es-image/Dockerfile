@@ -47,7 +47,7 @@ COPY template-k8s-logstash.json /elasticsearch-1.5.2/config/templates/template-k
 COPY run.sh /
 COPY elasticsearch_logging_discovery /
 
-COPY repository-s3-5.1.1.zip  /tmp/repository-s3-5.1.1.zip
+COPY elasticsearch-cloud-aws-2.5.1.zip  /tmp/elasticsearch-cloud-aws-2.5.1.zip
 
 VOLUME ["/data"]
 EXPOSE 9200 9300
